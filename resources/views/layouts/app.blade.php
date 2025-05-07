@@ -23,8 +23,8 @@
     <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
         <div class="container">
             <a class="navbar-brand" href="{{ url('/') }}">
-                <img src="{{ asset('images/logo.png') }}" alt="StayHub Logo" height="40">
-                {{ config('app.name', 'StayHub') }}
+                <img src="{{ asset('images/logo.png') }}" alt="Bookify Logo" height="40">
+                {{ config('app.name', 'Bookify') }}
             </a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">

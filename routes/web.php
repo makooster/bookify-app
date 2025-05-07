@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 // Главная страница
@@ -22,15 +23,20 @@ Route::get('/properties/{property}', [PropertyController::class, 'show'])->name(
 
 // Маршруты с защитой аутентификации
 Route::middleware('auth')->group(function() {
-    // Управление объектами размещения
-    Route::get('/properties/create', [PropertyController::class, 'create'])->name('properties.create')->middleware('can:create,App\Models\Property');
-    Route::post('/properties', [PropertyController::class, 'store'])->name('properties.store');
+    // Property Management
+    Route::middleware('can:create,App\Models\Property')->group(function() {
+        Route::get('/properties/create', [PropertyController::class, 'create'])->name('properties.create');
+        Route::post('/properties', [PropertyController::class, 'store'])->name('properties.store');
+    });
+
     Route::get('/properties/{property}/edit', [PropertyController::class, 'edit'])->name('properties.edit');
     Route::put('/properties/{property}', [PropertyController::class, 'update'])->name('properties.update');
     Route::delete('/properties/{property}', [PropertyController::class, 'destroy'])->name('properties.destroy');
 
-    // Маршрут для одобрения объекта (только для админа)
-    Route::patch('/properties/{property}/approve', [PropertyController::class, 'approve'])->name('properties.approve');
+    // Admin approval
+    Route::patch('/properties/{property}/approve', [PropertyController::class, 'approve'])
+        ->name('properties.approve')
+        ->middleware('can:approve,property');
 
     // Бронирования
     Route::get('/bookings', [BookingController::class, 'index'])->name('bookings.index');
@@ -46,6 +52,13 @@ Route::middleware('auth')->group(function() {
     Route::get('/reviews/{review}/edit', [ReviewController::class, 'edit'])->name('reviews.edit');
     Route::put('/reviews/{review}', [ReviewController::class, 'update'])->name('reviews.update');
     Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
+});
+
+// Main dashboard route
+Route::middleware('auth')->group(function() {
+    Route::get('/dashboard', function () {
+        return redirect()->route('home'); // Or your preferred landing page
+    })->name('dashboard');
 });
 
 // Административная панель
