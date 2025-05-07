@@ -1,7 +1,7 @@
 <!-- resources/views/properties/index.blade.php -->
 @extends('layouts.app')
 
-@section('title', 'Browse Properties')
+@section('title', 'Bookify.com')
 
 @section('styles')
     <style>

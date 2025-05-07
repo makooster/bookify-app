@@ -64,3 +64,5 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::put('/amenities/{amenity}', [AdminController::class, 'updateAmenity'])->name('amenities.update');
     Route::delete('/amenities/{amenity}', [AdminController::class, 'destroyAmenity'])->name('amenities.destroy');
 });
+
+require __DIR__.'/auth.php';
